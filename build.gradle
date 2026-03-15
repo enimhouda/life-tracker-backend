@@ -1,0 +1,75 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.0.3'
+	id 'io.spring.dependency-management' version '1.1.4'
+	id "org.openapi.generator" version "7.4.0"
+}
+
+group = 'com.life'
+version = '0.0.1-SNAPSHOT'
+description = 'Life-Tracker'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+springBoot {
+	mainClass = 'com.life.tracker.TrackerApplication'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// ✔️ richtige Version – funktioniert mit Jackson 3
+	implementation 'org.openapitools:jackson-databind-nullable:0.2.9'
+
+	implementation 'io.swagger.core.v3:swagger-models:2.2.20'
+	implementation 'io.swagger.core.v3:swagger-annotations:2.2.20'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir "$buildDir/generated/src/main/java"
+		}
+	}
+}
+
+openApiGenerate {
+	generatorName = "spring"
+	inputSpec = "$rootDir/src/main/resources/openapi/person.yaml"
+	outputDir = "$buildDir/generated"
+
+	additionalProperties = [
+			useJakartaEe: true,
+			interfaceOnly: false,
+			skipDefaultInterface: true,
+			generateApiTests: false,
+			generateApiDocumentation: false,
+
+			// 🔥 verhindert tools.jackson
+			useSpringBoot3: true,
+			serializationLibrary: "jackson",
+			dateLibrary: "java8"
+	]
+}
+
+tasks.compileJava {
+	dependsOn(tasks.openApiGenerate)
+}

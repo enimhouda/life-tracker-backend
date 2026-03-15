@@ -1,0 +1,38 @@
+openapi: 3.0.1
+info:
+  title: Person API
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /api/person/save:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+        required: true
+      responses:
+        "200":
+          description: OK
+      summary: Speichert eine Person in CSV
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    Person:
+      example:
+        vorname: vorname
+        nachname: nachname
+        alter: 0
+      properties:
+        vorname:
+          type: string
+        nachname:
+          type: string
+        alter:
+          type: integer
+      type: object
+

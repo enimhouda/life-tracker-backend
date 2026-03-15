@@ -1,0 +1,40 @@
+openapi: 3.0.1
+info:
+  title: Registration API
+  version: 1.0.0
+
+paths:
+  /api/registration/save:
+    post:
+      tags:
+        - Registration
+      summary: Speichert eine Registration in Keycloack
+      operationId: saveRegistration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Registration'
+      responses:
+        '200':
+          description: OK
+
+components:
+  schemas:
+    Registration:
+      type: object
+      properties:
+        vorname:
+          type: string
+        nachname:
+          type: string
+        email:
+          type: string
+        geburtsdatum:
+              type: string
+        land:
+          type: string
+        passwort:
+          type: string
+
