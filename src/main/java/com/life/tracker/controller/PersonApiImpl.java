@@ -1,7 +1,7 @@
 package com.life.tracker.controller;
 
 
-import com.life.tracker.model.ZielEntity;
+
 import com.life.tracker.service.UserService;
 import com.life.tracker.service.ZielService;
 import jakarta.validation.Valid;
